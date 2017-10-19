@@ -1,0 +1,73 @@
+//algunos modulos.
+
+module ALUSinante(clk, control, F, W, salida);
+  input clk;
+  input [3:0] control;
+  input [7:0] F;
+  input [7:0] W;
+  outpu [7:0] salida;
+
+  reg [7:0] salida;
+
+  always @ (posedge clk)
+    case (control)
+      0:salida <= F;
+      1:salida <= 0;
+      2:salida <= W - F;
+      3:salida <= W - 1;
+      4:salida <= F | W;
+      5:salida <= F & W;
+      6:salida <= F ^ W;
+      7:salida <= F + W;
+      8:salida <= W;
+      9:salida <= -W;
+      10:salida <= W + 1;
+      11:salida <= W - 1; 
+      //no se que significan las demas instrucciones. 
+    endcase
+  
+  
+endmodule
+
+
+// tomado de> http://www.asic-world.com/code/hdl_models/up_counter.v
+//-----------------------------------------------------
+// Design Name : up_counter
+// File Name   : up_counter.v
+// Function    : Up counter
+// Coder     : Deepak
+//-----------------------------------------------------
+module PC(out, enable , clk, reset);
+//----------Output Ports--------------
+    output [7:0] out;
+//------------Input Ports--------------
+     input enable, clk, reset;
+//------------Internal Variables--------
+    reg [7:0] out;
+//-------------Code Starts Here-------
+always @(posedge clk)
+if (reset) begin
+  out <= 8'b0 ;
+end else if (enable) begin
+  out <= out + 1;
+end
+endmodule 
+
+module Inst_Memory(
+  input clk, enable,
+  input[10:0]address,
+  output[11:0] out
+);
+  reg [11:0] out;
+  reg [11:0] memory [0:1024];
+  
+  always @ (posedge clk)
+    if (enable) begin
+      out <= memory[address];
+    end
+  
+initial begin
+ $readmemh("memory.list", memory);
+end
+endmodule
+
