@@ -71,3 +71,21 @@ initial begin
 end
 endmodule
 
+
+module Inst_Memory(clk, enable, address, out);
+  input clk; 
+  input enable;
+  input [10:0] address;
+  output[11:0] out
+  reg [11:0] out;
+  reg [11:0] memory [0:1024];
+  
+  always @ (posedge clk)
+    if (enable) begin
+      out <= memory[address];
+    end
+  
+initial begin
+ $readmemh("memory.list", memory);
+end
+endmodule
